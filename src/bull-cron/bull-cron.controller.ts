@@ -10,8 +10,4 @@ export class BullCronController {
     return this.bullCron.sendJobMessageOne();
   }
 
-  @Get('/job2')
-  getJobTwo() {
-    return this.bullCron.sendJobMessageOne();
-  }
 }

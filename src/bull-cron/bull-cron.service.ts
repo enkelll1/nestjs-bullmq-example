@@ -6,15 +6,17 @@ import {
   OnQueueError,
   OnQueueEvent,
   OnQueueFailed,
+  Process,
+  Processor,
 } from '@nestjs/bull';
 import { Job, Queue } from 'bull';
 
 @Injectable()
+@Processor('my-queue')
 export class BullCronService {
   constructor(@InjectQueue('my-queue') private queue: Queue) {}
 
   async sendJobMessageOne() {
-    //
     await this.queue.add(
       'job1',
       {
@@ -24,6 +26,13 @@ export class BullCronService {
         repeat: {
           cron: '30 04 * * *',
         },
+        //ne qofte se e do ta ekzekutosh vetem nje her jobin
+        //repeat:null
+        //ne qofte se e do ta ekzekutosh vetem nje her ne sekond
+        //repeat:{
+        //every: '1 second'
+        //}
+        delay: new Date('2023-03-03T04:30:00.000Z').getTime(),
       },
     );
   }
@@ -37,11 +46,6 @@ export class BullCronService {
 
   @Process('job1')
   async readOperationJob1(job: Job) {
-    // shkruaj funksjonin qe do te besh per job1
-  }
-
-  @Process('job2')
-  async readOperationJob2(job: Job) {
     // shkruaj funksjonin qe do te besh per job1
   }
 
